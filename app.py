@@ -4,11 +4,11 @@ app = Flask(__name__)
 
 EMAIL = "manya3872.beai23@chitkara.edu.in"
 
-GEMINI_API_KEY = "AIzaSyC8OCtKn8gKMaZ7uMR0DoqW-mO3kr6oxIY"
+GEMINI_API_KEY = "AIzaSyCSwSZoGX1nBCAfNr55BUOAkHPhvAjR0y4"
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.5-flash")
 
-
+print("API KEY:", GEMINI_API_KEY)
 def fibonacci(n):
     arr = [0, 1]
     for i in range(2, n):
@@ -107,10 +107,12 @@ def bfhl():
 
             try:
                 response = model.generate_content(
-                    f"Answer the following in one word only: {question}"
+                    f"Answer in one word only: {question}"
                 )
-                answer = response.text.strip()
-            except Exception:
+                print("RAW RESPONSE:", response)
+                answer = response.text
+            except Exception as e:
+                print("AI ERROR:", e)
                 answer = "Error"
 
             return jsonify({
@@ -118,6 +120,8 @@ def bfhl():
                 "official_email": EMAIL,
                 "data": answer
             })
+
+
 
         return jsonify({"is_success": False}), 400
 
